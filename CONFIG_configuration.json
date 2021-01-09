@@ -1,9 +1,0 @@
-{
-	"flask_server_ip":"192.168.10",
-	"flask_server_port":"5001",
-	"AP_ssid_esp32":"esp32",
-	"AP_pass_esp32":"esp32@2020",
-	"wifi_ssid_esp32":"Depeka",
-	"wifi_pass_esp32":"SudKriDep242612",
-	"agent_identification_email":"depekakrishnan12@gmail.com"
-}
