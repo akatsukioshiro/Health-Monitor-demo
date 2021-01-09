@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body
+			{
+				margin:0;
+				background-color:#222233;
+				font-family: Arial, Helvetica, sans-serif;
+			}
+			desktop
+			{
+				height:70%;
+				width:90%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				background-color: #ccccd9;
+				text-align:center;
+				overflow-y:scroll;
+			}
+			#loader
+			{
+                                position: absolute;
+                                left: 50%;
+                                top: 50%;
+                                transform: translate(-50%, -50%);
+				z-index: 1;
+			}
+			table
+			{
+				border-collapse: collapse;
+				z-index: 0;
+			}
+			th
+			{
+				position: sticky;
+				top: 0;
+				background-color:#555566;
+				color:white;
+				min-width:140px;
+				padding-top:20px;
+				padding-bottom:20px;
+			}
+			td
+			{
+				min-width:140px;
+				padding:1px;
+				border: 1px solid #eeeeff;
+			}
+		</style>
+	</head>
+	<body>
+		<img id="loader" src="ball-triangle.svg" alt="" width="50">
+		<desktop>
+			<table id="database">
+				
+			</table>
+		</desktop>
+		<script>
+		clean();
+		document.getElementById("loader").style.display="none";
+		database();
+		window.setInterval(database, 30000);
+		function jsonify(r)
+		{
+			var jsn=JSON.parse(r);
+			for(var keys in jsn)
+			{
+				console.log(keys);
+				var table = document.getElementById("database");
+				var row = table.insertRow(0);
+				var cell0 = row.insertCell(0);
+				var cell1 = row.insertCell(1);
+				var cell2 = row.insertCell(2);
+				var cell3 = row.insertCell(3);
+				var cell4 = row.insertCell(4);
+				var cell5 = row.insertCell(5);
+				var cell6 = row.insertCell(6);
+				var cell7 = row.insertCell(7);
+				var cell8 = row.insertCell(8);
+				cell0.innerHTML = keys;
+				cell0.style.backgroundColor="#cfcfdb";
+				cell1.innerHTML = jsn[keys]["Email"];
+				cell1.style.backgroundColor="#ccccd9";
+				cell2.innerHTML = jsn[keys]["client_id"];
+				cell2.style.backgroundColor="#cfcfdb";
+				cell3.innerHTML = jsn[keys]["BodyTempC"];
+				cell3.style.backgroundColor="#ccccd9";
+				cell4.innerHTML = jsn[keys]["BodyTempF"];
+				cell4.style.backgroundColor="#cfcfdb";
+				cell5.innerHTML = jsn[keys]["Humidity"];
+				cell5.style.backgroundColor="#ccccd9";
+				cell6.innerHTML = jsn[keys]["Temperature"];
+				cell6.style.backgroundColor="#cfcfdb";
+				cell7.innerHTML = jsn[keys]["wifi_names"];
+				cell7.style.backgroundColor="#ccccd9";
+				cell8.innerHTML = jsn[keys]["wifi_ids"];
+				cell8.style.backgroundColor="#cfcfdb";
+			}
+			var tableH = document.getElementById("database");
+			var header = tableH.createTHead();
+			var rowH = header.insertRow(0);
+			var cellH0 = rowH.insertCell(0);
+			var cellH1 = rowH.insertCell(1);
+			var cellH2 = rowH.insertCell(2);
+			var cellH3 = rowH.insertCell(3);
+			var cellH4 = rowH.insertCell(4);
+			var cellH5 = rowH.insertCell(5);
+			var cellH6 = rowH.insertCell(6);
+			var cellH7 = rowH.insertCell(7);
+			var cellH8 = rowH.insertCell(8);
+			cellH0.outerHTML = "<th><b>TIMESTAMP</b></th>";
+			cellH1.outerHTML = "<th><b>EMAIL</b></th>";
+			cellH2.outerHTML = "<th><b>CLIENT ID</b></th>";
+			cellH3.outerHTML = "<th><b>Body Temp (&deg;C)</b></th>";
+			cellH4.outerHTML = "<th><b>Body Temp (&deg;F)</b></th>";
+			cellH5.outerHTML = "<th><b>Humidity</b></th>";
+			cellH6.outerHTML = "<th><b>Temperature (&deg;F)</b></th>";
+			cellH7.outerHTML = "<th><b>WiFi Names</b></th>";
+			cellH8.outerHTML = "<th><b>WiFi IDs</b></th>";
+			//console.log(jsn);
+			document.getElementById("loader").style.display="none";
+		}
+		function clean()
+		{
+			document.getElementById("loader").style.display="";
+			
+			var table = document.getElementById("database").getElementsByTagName("tr");
+			while (table.length > 0)
+			{
+				table[0].remove();
+			}
+		}
+		function database()
+		{
+			clean();
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function()
+			{
+				if (this.readyState == 4 && this.status == 200)
+				{
+					jsonify(this.responseText);
+					
+				}
+			};
+			xhttp.open("GET", "http://CURR_IP:5001/database", true);
+			xhttp.setRequestHeader("Content-type", "text/plain");
+			xhttp.send();
+		}
+		</script>
+	</body>
+</html>
+
